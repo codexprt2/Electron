@@ -8,25 +8,46 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const url = require("url");
 
-let win;
+let winone, winTwo;
 
 function createWindow() {
-	win = new BrowserWindow({
+	winone = new BrowserWindow({
 		webPreferences: {
 			nodeIntegration: true,
 			contextIsolation: false,
 			enableRemoteModule: true,
 		},
 	});
-	win.loadURL(
+	winTwo = new BrowserWindow({
+		webPreferences: {
+			nodeIntegration: true,
+			contextIsolation: false,
+			enableRemoteModule: true,
+		},
+	});
+	winone.loadURL(
 		url.format({
-			pathname: path.join(__dirname, "index.html"),
+			pathname: path.join(__dirname, "one.html"),
 			protocol: "file",
 			slashes: true,
 		})
 	);
-	win.webContents.openDevTools();
-	win.on("closed", () => {
+	winTwo.loadURL(
+		url.format({
+			pathname: path.join(__dirname, "two.html"),
+			protocol: "file",
+			slashes: true,
+		})
+	);
+
+	winone.webContents.openDevTools();
+	winTwo.webContents.openDevTools();
+
+	winone.on("closed", () => {
+		win = null;
+	});
+
+	winTwo.on("closed", () => {
 		win = null;
 	});
 }
