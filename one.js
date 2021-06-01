@@ -1,1 +1,25 @@
 console.log("from Renderer one");
+
+const BrowserWindow = require("electron").remote.BrowserWindow;
+const path = require("path");
+const url = require("url");
+
+const newWindowBtn = document.getElementById("newWindowBtn");
+newWindowBtn.addEventListener("click", function (event) {
+	let winThree = new BrowserWindow({
+		webPreferences: {
+			nodeIntegration: true,
+			contextIsolation: false,
+			enableRemoteModule: true,
+		},
+	});
+
+	winThree.loadURL(
+		url.format({
+			pathname: path.join(__dirname, "three.html"),
+			protocol: "file",
+			slashes: true,
+		})
+	);
+	winThree.webContents.openDevTools();
+});
